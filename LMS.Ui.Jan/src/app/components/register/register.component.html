@@ -1,0 +1,122 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Create Account</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            class="form-control"
+            [class.error]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+          />
+          <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="error-message">
+            First name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            class="form-control"
+            [class.error]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+          />
+          <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="error-message">
+            Last name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        />
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-message">
+          <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
+          <span *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email format</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="roleId">Role</label>
+        <select
+          id="roleId"
+          formControlName="roleId"
+          class="form-control"
+        >
+          <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          />
+          <button 
+            type="button" 
+            class="toggle-password-btn" 
+            (click)="togglePasswordVisibility()"
+            tabindex="-1">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-message">
+          <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</span>
+          <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="form-control"
+            [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+          />
+          <button 
+            type="button" 
+            class="toggle-password-btn" 
+            (click)="toggleConfirmPasswordVisibility()"
+            tabindex="-1">
+            <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="error-message">
+          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
+          <span *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">Passwords do not match</span>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message global-error">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="registerForm.invalid || isLoading">
+        {{ isLoading ? 'Creating account...' : 'Register' }}
+      </button>
+    </form>
+
+    <div class="login-link">
+      <p>Already have an account? <a routerLink="/login" routerLinkActive="active">Login here</a></p>
+    </div>
+  </div>
+</div>

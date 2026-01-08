@@ -1,0 +1,74 @@
+<div class="login-container">
+  <div class="login-box">
+    <!-- Left Side - Login Form (40%) -->
+    <div class="login-left">
+      <div class="login-content">
+        <h1 class="welcome-text">Welcome Back!</h1>
+        <h2>Login</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-control"
+              placeholder="Enter your email"
+              [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+            />
+            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-message">
+              <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
+              <span *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-input-wrapper">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                class="form-control"
+                placeholder="Enter your password"
+                [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+              />
+              <button 
+                type="button" 
+                class="toggle-password-btn" 
+                (click)="togglePasswordVisibility()"
+                tabindex="-1">
+                <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-message">
+              <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
+              <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+            </div>
+          </div>
+
+          <div *ngIf="errorMessage" class="error-message global-error">
+            {{ errorMessage }}
+          </div>
+
+          <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || isLoading">
+            {{ isLoading ? 'Logging in...' : 'Login' }}
+          </button>
+        </form>
+
+        <div class="register-link">
+          <p>Don't have an account? <a routerLink="/register" routerLinkActive="active">Register here</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side - Classroom Image (60%) -->
+    <div class="login-right">
+      <div class="image-container">
+        <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1200&auto=format&fit=crop" 
+             alt="School Classroom" 
+             class="classroom-image"/>
+      </div>
+    </div>
+  </div>
+</div>
